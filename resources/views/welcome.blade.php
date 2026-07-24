@@ -18,17 +18,24 @@
             Pesan aman & cepat dengan Midtrans.
         </p>
 
-        <div class="flex gap-4">
-            <a href="#events"
-                class="px-8 py-4 bg-indigo-600 text-white rounded-2xl font-bold text-lg shadow-xl shadow-indigo-200 hover:scale-105 transition-transform">
-                Mulai Jelajah
-            </a>
+        <div class="flex gap-4 flex-wrap">
 
-            <a href="#"
-                class="px-8 py-4 border-2 border-slate-200 rounded-2xl font-bold text-lg hover:border-indigo-600 hover:text-indigo-600 transition">
-                Cara Pesan
-            </a>
-        </div>
+    <a href="#events"
+        class="px-8 py-4 bg-indigo-600 text-white rounded-2xl font-bold text-lg shadow-xl shadow-indigo-200 hover:scale-105 transition-transform">
+        Mulai Jelajah
+    </a>
+
+    <a href="#"
+        class="px-8 py-4 border-2 border-slate-200 rounded-2xl font-bold text-lg hover:border-indigo-600 hover:text-indigo-600 transition">
+        Cara Pesan
+    </a>
+
+    <a href="{{ route('organization.register') }}"
+        class="px-8 py-4 bg-emerald-600 text-white rounded-2xl font-bold text-lg shadow-xl shadow-emerald-200 hover:bg-emerald-700 transition">
+        Daftarkan Organisasi
+    </a>
+
+</div>
     </div>
 
     <div class="flex-1 relative">
@@ -152,9 +159,10 @@
 
             <div class="relative overflow-hidden aspect-[3/4]">
 
-                <img src="https://placehold.co/600x800"
-                    alt="{{ $event->title }}"
-                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                <img src="{{ $event->poster_path
+                ? asset('storage/' . $event->poster_path)
+                : 'https://placehold.co/600x800' }}"
+                alt="{{ $event->title }}">
 
                 <div
                     class="absolute top-4 left-4 px-3 py-1 bg-white/90 backdrop-blur rounded-lg text-xs font-bold uppercase text-indigo-600">
@@ -182,27 +190,103 @@
                     </span>
                 </div>
 
-                <div class="flex justify-between items-center pt-4 border-t">
+                <div class="pt-4 border-t">
 
-                    <span class="text-2xl font-black text-indigo-600">
-                        Rp {{ number_format($event->price, 0, ',', '.') }}
-                    </span>
+            <div class="flex justify-between items-center mb-4">
 
-                    <a href="{{ url('event/1') }}"
-                        class="px-5 py-2 bg-indigo-50 text-indigo-600 rounded-xl font-bold hover:bg-indigo-600 hover:text-white transition">
-                        Lihat Detail
-                    </a>
+                <span class="text-2xl font-black text-indigo-600">
+                    Rp {{ number_format($event->price,0,',','.') }}
+                </span>
+
+                <a href="{{ route('events.show', $event->id) }}"
+                    class="px-5 py-2 bg-indigo-50 text-indigo-600 rounded-xl font-bold hover:bg-indigo-600 hover:text-white transition">
+                    Lihat Detail
+                </a>
+
+            </div>
+
+            @php
+                $avgRating = round($event->reviews->avg('rating'),1);
+                $totalReview = $event->reviews->count();
+            @endphp
+
+            @if($totalReview > 0)
+
+                <div class="mb-3">
+
+                    <div class="text-yellow-500 text-lg">
+                        @for($i=1;$i<=5;$i++)
+                            @if($i <= round($avgRating))
+                                ★
+                            @else
+                                ☆
+                            @endif
+                        @endfor
+                    </div>
+
+                    <p class="text-sm text-slate-600">
+                        <strong>{{ $avgRating }}/5</strong>
+                        ({{ $totalReview }} Review)
+                    </p>
 
                 </div>
-            </div>
+
+                <div class="border-t pt-3">
+
+                    <h4 class="text-sm font-bold text-slate-700 mb-2">
+                        Review Terbaru
+                    </h4>
+
+                    @foreach($event->reviews->take(2) as $review)
+
+                        <div class="mb-3">
+
+                            <div class="text-yellow-500">
+                                @for($i=1;$i<=5;$i++)
+                                    @if($i <= $review->rating)
+                                        ★
+                                    @else
+                                        ☆
+                                    @endif
+                                @endfor
+                            </div>
+
+                            <p class="text-sm text-slate-600 italic">
+                                "{{ $review->review }}"
+                            </p>
+
+                        </div>
+
+                    @endforeach
+
+                </div>
+
+            @else
+
+                <div class="mt-3">
+
+                    <div class="text-yellow-500 text-lg">
+                        ☆☆☆☆☆
+                    </div>
+
+                    <p class="text-sm text-slate-400">
+                        Belum ada review
+                    </p>
+
+                </div>
+
+            @endif
+
         </div>
+                    </div>
+                </div>
 
-        @endforeach
+                @endforeach
 
-    </div>
-</section>
+            </div>
+        </section>
 
-</section>
+        </section>
 
 <!-- PARTNER SECTION -->
 <section class="py-16 bg-slate-50">

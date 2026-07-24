@@ -29,6 +29,7 @@ transition font-medium" required>
 }}</span> @enderror
 </div>
 
+
 <div>
 <label class="block text-sm font-bold text-slate-700 mb-2 uppercase
 

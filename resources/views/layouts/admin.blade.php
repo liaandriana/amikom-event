@@ -113,11 +113,44 @@ d="M17 20h5V4H2v16h5m10 0v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6m10 0H7">
 <span>Kelola Partner</span>
 
 </a>
+    <a href="{{ route('admin.jabatan.index') }}"
+        class="flex items-center gap-3 px-4 py-3 rounded-xl transition
+        {{ request()->routeIs('admin.jabatan.*') ? 'bg-white/10 text-white font-semibold' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
 
+        <svg xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 7V3m8 4V3M5 11h14M5 19h14M5 7h14v14H5V7z"/>
+        </svg>
+
+        <span>Kelola Jabatan</span>
+    </a>
+    <a href="{{ route('admin.pengurus.index') }}"
+        class="flex items-center gap-3 px-4 py-3 rounded-xl transition
+        {{ request()->routeIs('admin.pengurus.*') ? 'bg-white/10 text-white font-semibold' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
+
+        <svg xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 20h5V4H2v16h5m10 0v-2a4 4 0 00-8 0v2m8 0H9m4-10a4 4 0 11-8 0 4 4 0 018 0z"/>
+        </svg>
+
+        <span>Kelola Pengurus</span>
+    </a>
 </nav>
 
 <div class="pt-6 border-t border-indigo-800">
-<form action="#" method="POST">
+<form action="{{ route('admin.logout') }}" method="POST">
 @csrf
 <button type="submit" class="w-full flex items-center gap-3 px-4
 py-3 text-indigo-300 hover:text-white transition font-medium text-left">

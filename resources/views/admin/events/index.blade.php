@@ -21,11 +21,12 @@ overflow-hidden">
 
 font-black tracking-widest">
 <tr>
-<th class="px-8 py-4 w-16">No</th>
-<th class="px-8 py-4">Poster</th>
-<th class="px-8 py-4">Event</th>
-<th class="px-8 py-4">Harga / Stok</th>
-<th class="px-8 py-4">Aksi</th>
+    <th class="px-8 py-4 w-16">No</th>
+    <th class="px-8 py-4">Poster</th>
+    <th class="px-8 py-4">Event</th>
+    <th class="px-8 py-4">Organisasi</th>
+    <th class="px-8 py-4">Harga / Stok</th>
+    <th class="px-8 py-4">Aksi</th>
 </tr>
 
 </thead>
@@ -33,82 +34,114 @@ font-black tracking-widest">
 @forelse($events as $index => $event)
 <tr class="hover:bg-slate-50/50 transition">
 
-<td class="px-8 py-6 font-bold text-slate-400">{{
+    <!-- No -->
+    <td class="px-8 py-6 font-bold text-slate-400">
+        {{ $events->firstItem() + $index }}
+    </td>
 
-$events->firstItem() + $index }}</td>
-<td class="px-8 py-6">
-<img src="https://placehold.co/16x20" class="w-16 h-20
+    <!-- Poster -->
+    <td class="px-8 py-6">
 
-rounded-xl object-cover shadow-sm">
+        @if($event->poster_path)
 
-</td>
-<td class="px-8 py-6">
-<p class="font-black text-slate-800">{{ $event->title
+            <img src="{{ asset('storage/' . $event->poster_path) }}"
+                 class="w-16 h-20 rounded-xl object-cover shadow-sm">
 
-}}</p>
+        @else
 
-<p class="text-xs text-slate-400">{{
+            <img src="https://placehold.co/100x120"
+                 class="w-16 h-20 rounded-xl object-cover shadow-sm">
 
-$event->category->name ?? '-' }} • {{ $event->date }}</p>
+        @endif
 
-</td>
-<td class="px-8 py-6">
+    </td>
 
-<p class="font-bold text-indigo-600">Rp {{
+    <!-- Event -->
+    <td class="px-8 py-6">
 
-number_format($event->price, 0, ',', '.') }}</p>
+        <p class="font-black text-slate-800">
+            {{ $event->title }}
+        </p>
 
-<p class="text-xs text-slate-400">Stok: {{ $event->stock
+        <p class="text-xs text-slate-400">
+            {{ $event->category->name ?? '-' }} • {{ $event->date }}
+        </p>
 
-}}</p>
+    </td>
 
-</td>
-<td class="px-8 py-6">
-<div class="flex gap-2">
+    <!-- Organisasi -->
+    <td class="px-8 py-6">
 
-<!-- TOMBOL EDIT -->
-<a href="{{ route('admin.events.edit', $event->id) }}"
-class="p-2.5 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-600 hover:text-white transition">
+        <p class="font-semibold text-slate-700">
+            {{ $event->organization->name ?? '-' }}
+        </p>
 
-<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-d="M11 5h2m-1-1v2m-7 7l8-8 4 4-8 8H7v-4z"></path>
-</svg>
+    </td>
 
-</a>
+    <!-- Harga -->
+    <td class="px-8 py-6">
 
-<!-- TOMBOL DELETE -->
-<form action="{{ route('admin.events.destroy', $event->id) }}" method="POST"
-onsubmit="return confirm('Apakah Anda yakin ingin menghapus acara ini?'); ">
+        <p class="font-bold text-indigo-600">
+            Rp {{ number_format($event->price,0,',','.') }}
+        </p>
 
-@csrf
-@method('DELETE')
+        <p class="text-xs text-slate-400">
+            Stok : {{ $event->stock }}
+        </p>
 
-<button type="submit" class="p-2.5
-bg-rose-50 text-rose-600 rounded-xl hover:bg-rose-600 hover:text-white transition">
+    </td>
 
-<svg class="w-5 h-5" fill="none"
-stroke="currentColor" viewBox="0 0 24 24">
+    <!-- Aksi -->
+    <td class="px-8 py-6">
 
-<path stroke-linecap="round" stroke-linejoin="round"
-stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0
-01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4
-7h16"></path>
+        <div class="flex gap-2">
 
-</svg>
-</button>
-</form>
+            <a href="{{ route('admin.events.edit',$event->id) }}"
+               class="p-2.5 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-600 hover:text-white transition">
 
-</div>
-</td>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M11 5h2m-1-1v2m-7 7l8-8 4 4-8 8H7v-4z"/>
+                </svg>
+
+            </a>
+
+            <form action="{{ route('admin.events.destroy',$event->id) }}"
+                  method="POST"
+                  onsubmit="return confirm('Apakah Anda yakin ingin menghapus acara ini?')">
+
+                @csrf
+                @method('DELETE')
+
+                <button type="submit"
+                        class="p-2.5 bg-rose-50 text-rose-600 rounded-xl hover:bg-rose-600 hover:text-white transition">
+
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </td>
+
+</tr>
 </tr>
 @empty
 
 <tr>
 
-<td colspan="5" class="px-8 py-10 text-center
-
-text-slate-500">Belum ada acara yang ditambahkan.</td>
+<td colspan="6" class="px-8 py-10 text-center text-slate-500">
+    Belum ada acara yang ditambahkan.
+</td>
 
 </tr>
 @endforelse

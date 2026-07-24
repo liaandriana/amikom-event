@@ -1,35 +1,52 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+namespace App\Http\Controllers\Admin;
 
-return new class extends Migration
+use App\Http\Controllers\Controller;
+use App\Models\Event;
+use App\Models\Transaction;
+
+class DashboardController extends Controller
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function index()
     {
-    Schema::create('transactions', function (Blueprint $table) {
-    $table->id();
-    $table->foreignId('event_id')->constrained()->cascadeOnDelete();
-    $table->string('order_id')->unique(); // No Pesanan unik
-    $table->string('customer_name');
-    $table->string('customer_email');
-    $table->string('customer_phone');
-    $table->integer('total_price');
-    $table->string('status')->default('Pending');
-    $table->string('snap_token')->nullable();
-    $table->timestamps();
-    });
-    }
+        $totalRevenue = Transaction::whereIn('status', ['success', 'settlement'])
+            ->sum('total_price');
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('transactions');
+        $ticketsSold = Transaction::whereIn('status', ['success', 'settlement'])
+            ->count();
+
+        $activeEvents = Event::count();
+
+        $pendingOrders = Transaction::where('status', 'pending')
+            ->count();
+
+        $recentTransactions = Transaction::with('event')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        $labels = [];
+        $data = [];
+
+        for ($i = 5; $i >= 0; $i--) {
+            $month = now()->subMonths($i);
+
+            $labels[] = $month->format('M');
+
+            $data[] = Event::whereYear('created_at', $month->year)
+                ->whereMonth('created_at', $month->month)
+                ->count();
+        }
+
+        return view('admin.dashboard', compact(
+            'totalRevenue',
+            'ticketsSold',
+            'activeEvents',
+            'pendingOrders',
+            'recentTransactions',
+            'labels',
+            'data'
+        ));
     }
-};
+}

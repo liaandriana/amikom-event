@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Models\Organization;
 
 return [
 
@@ -36,13 +37,17 @@ return [
     | Supported: "session"
     |
     */
-
-    'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
+'guards' => [
+    'web' => [
+        'driver' => 'session',
+        'provider' => 'users',
     ],
+
+    'organization' => [
+        'driver' => 'session',
+        'provider' => 'organizations',
+    ],
+],
 
     /*
     |--------------------------------------------------------------------------
@@ -61,17 +66,23 @@ return [
     |
     */
 
-    'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', User::class),
-        ],
+ 'providers' => [
+
+    'users' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\User::class,
+    ],
+
+    'organizations' => [
+        'driver' => 'eloquent',
+        'model' => Organization::class,
+    ],
+
+],
 
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
-        // ],
-    ],
 
     /*
     |--------------------------------------------------------------------------
