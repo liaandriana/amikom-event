@@ -44,28 +44,26 @@
     </label>
 
     <select
-        name="organization_id"
-        class="w-full px-5 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl
-        focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 outline-none transition font-medium"
-        required>
+    name="organization_id"
+    class="w-full px-5 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl">
 
-        <option value="">
-            Pilih Organisasi
+    <option value="">
+        -- Tanpa Organisasi --
+    </option>
+
+    @foreach($organizations as $organization)
+
+        <option
+            value="{{ $organization->id }}"
+            {{ old('organization_id', $event->organization_id ?? '') == $organization->id ? 'selected' : '' }}>
+
+            {{ $organization->name }}
+
         </option>
 
-        @foreach($organizations as $organization)
+    @endforeach
 
-            <option
-                value="{{ $organization->id }}"
-                {{ old('organization_id', $event->organization_id) == $organization->id ? 'selected' : '' }}>
-
-                {{ $organization->name }}
-
-            </option>
-
-        @endforeach
-
-    </select>
+</select>
 
     @error('organization_id')
         <span class="text-red-500 text-sm mt-1">

@@ -35,7 +35,7 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'organization_id' => 'required|exists:organizations,id',
+            'organization_id' => 'nullable|exists:organizations,id',
             'title' => 'required|max:255',
             'category_id' => 'required|exists:categories,id',
             'description' => 'nullable',
