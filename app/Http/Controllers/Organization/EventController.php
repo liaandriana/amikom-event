@@ -18,14 +18,14 @@ class EventController extends Controller
             ->latest()
             ->paginate(10);
 
-        return view('organization.events.index', compact('events'));
+        return view('Organization.events.index', compact('events'));
     }
 
     public function create()
     {
         $categories = Category::all();
 
-        return view('organization.events.create', compact('categories'));
+        return view('Organization.events.create', compact('categories'));
     }
 
     public function store(Request $request)
@@ -71,7 +71,7 @@ class EventController extends Controller
 
         $categories = Category::all();
 
-        return view('organization.events.edit', compact('event', 'categories'));
+        return view('Organization.events.edit', compact('event', 'categories'));
     }
 
     public function update(Request $request, $id)
