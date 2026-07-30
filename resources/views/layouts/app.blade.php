@@ -31,7 +31,8 @@
                 AH</div>
             <span class="text-xl font-bold tracking-tight">AmikomEventHub</span>
         </div>
-        <div class="hidden md:flex items-center gap-8 font-medium">
+       <!-- Desktop Menu -->
+<div class="hidden md:flex items-center gap-8 font-medium">
 
     <a href="{{ route('welcome') }}" class="hover:text-indigo-600 transition">
         Jelajahi
@@ -47,12 +48,19 @@
 
     @auth
         <a href="{{ route('my-ticket') }}"
-            class="{{ request()->routeIs('my-ticket') ? 'text-indigo-600 font-semibold' : 'hover:text-indigo-600' }} transition">
+            class="hover:text-indigo-600 transition">
             My Ticket
         </a>
     @endauth
 
 </div>
+
+
+<!-- Burger Button Mobile -->
+<button id="menu-btn"
+    class="md:hidden text-3xl text-slate-700">
+    ☰
+</button>
 <div class="flex items-center gap-3">
 
     @guest
@@ -79,6 +87,35 @@
                 class="px-5 py-2.5 bg-indigo-600 text-white rounded-xl font-semibold shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition">Daftar</button>
         </div> -->
     </nav>
+
+    <!-- Mobile Menu -->
+<div id="mobile-menu"
+    class="hidden fixed top-24 left-4 right-4 z-50 bg-white rounded-2xl shadow-lg p-6 md:hidden">
+
+    <a href="{{ route('welcome') }}"
+        class="block py-3 hover:text-indigo-600">
+        Jelajahi
+    </a>
+
+    <a href="#"
+        class="block py-3 hover:text-indigo-600">
+        Kategori
+    </a>
+
+    <a href="#"
+        class="block py-3 hover:text-indigo-600">
+        Tentang Kami
+    </a>
+
+
+    @auth
+        <a href="{{ route('my-ticket') }}"
+            class="block py-3 hover:text-indigo-600">
+            My Ticket
+        </a>
+    @endauth
+
+</div>
     
     @yield('content')
     <!-- Hero Section -->
@@ -267,6 +304,14 @@
             &copy; 2024 AmikomEventHub. Built with Laravel & Tailwind CSS.
         </div>
     </footer>
+<script>
+    const btn = document.getElementById('menu-btn');
+    const menu = document.getElementById('mobile-menu');
+
+    btn.addEventListener('click', () => {
+        menu.classList.toggle('hidden');
+    });
+</script>
 
 </body>
 
