@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Event;
+use App\Models\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -22,14 +23,19 @@ class EventController extends Controller
     public function create()
     {
         $categories = Category::all();
+        $organizations = Organization::all();
 
-        return view('admin.events.create', compact('categories'));
+        return view('admin.events.create', compact(
+            'categories',
+            'organizations'
+        ));
     }
 
     // Simpan event
     public function store(Request $request)
     {
         $request->validate([
+            'organization_id' => 'required|exists:organizations,id',
             'title' => 'required|max:255',
             'category_id' => 'required|exists:categories,id',
             'description' => 'nullable',
@@ -47,6 +53,7 @@ class EventController extends Controller
         }
 
         Event::create([
+            'organization_id' => $request->organization_id,
             'category_id' => $request->category_id,
             'title' => $request->title,
             'description' => $request->description,
@@ -63,18 +70,23 @@ class EventController extends Controller
     }
 
     // Form edit
-    public function edit($id)
+    public function edit(Event $event)
     {
-        $event = Event::findOrFail($id);
         $categories = Category::all();
+        $organizations = Organization::all();
 
-        return view('admin.events.edit', compact('event', 'categories'));
+        return view('admin.events.edit', compact(
+            'event',
+            'categories',
+            'organizations'
+        ));
     }
 
-    // Update
+    // Update event
     public function update(Request $request, $id)
     {
         $request->validate([
+            'organization_id' => 'required|exists:organizations,id',
             'title' => 'required|max:255',
             'category_id' => 'required|exists:categories,id',
             'description' => 'nullable',
@@ -105,7 +117,7 @@ class EventController extends Controller
             ->with('success', 'Data event berhasil diupdate');
     }
 
-    // Hapus
+    // Hapus event
     public function destroy($id)
     {
         $event = Event::findOrFail($id);
@@ -120,6 +132,4 @@ class EventController extends Controller
             ->route('admin.events.index')
             ->with('success', 'Data event berhasil dihapus');
     }
-
-    
 }
