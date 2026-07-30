@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -12,6 +13,7 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
+
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -19,18 +21,33 @@ class AuthController extends Controller
             'password' => ['required']
         ]);
 
+
         if(Auth::attempt($credentials))
         {
             $request->session()->regenerate();
+
+
+            // cek role admin
+            if(Auth::user()->role !== 'admin')
+            {
+                Auth::logout();
+
+                return back()->withErrors([
+                    'email' => 'Akun ini bukan admin'
+                ]);
+            }
+
 
             return redirect()
                 ->route('admin.dashboard');
         }
 
+
         return back()->withErrors([
             'email' => 'Email atau Password salah'
         ]);
     }
+
 
     public function logout(Request $request)
     {
@@ -43,4 +60,3 @@ class AuthController extends Controller
         return redirect('/');
     }
 }
-?>
