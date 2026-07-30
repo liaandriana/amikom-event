@@ -1,52 +1,34 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-use App\Http\Controllers\Controller;
-use App\Models\Event;
-use App\Models\Transaction;
-
-class DashboardController extends Controller
+return new class extends Migration
 {
-    public function index()
+    public function up(): void
     {
-        $totalRevenue = Transaction::whereIn('status', ['success', 'settlement'])
-            ->sum('total_price');
+        Schema::create('transactions', function (Blueprint $table) {
+            $table->id();
 
-        $ticketsSold = Transaction::whereIn('status', ['success', 'settlement'])
-            ->count();
+            $table->foreignId('event_id')->constrained()->cascadeOnDelete();
 
-        $activeEvents = Event::count();
+            $table->string('order_id')->unique();
+            $table->string('customer_name');
+            $table->string('customer_email');
+            $table->string('customer_phone');
 
-        $pendingOrders = Transaction::where('status', 'pending')
-            ->count();
+            $table->bigInteger('total_price');
 
-        $recentTransactions = Transaction::with('event')
-            ->latest()
-            ->take(5)
-            ->get();
+            $table->string('status')->default('pending');
+            $table->text('snap_token')->nullable();
 
-        $labels = [];
-        $data = [];
-
-        for ($i = 5; $i >= 0; $i--) {
-            $month = now()->subMonths($i);
-
-            $labels[] = $month->format('M');
-
-            $data[] = Event::whereYear('created_at', $month->year)
-                ->whereMonth('created_at', $month->month)
-                ->count();
-        }
-
-        return view('admin.dashboard', compact(
-            'totalRevenue',
-            'ticketsSold',
-            'activeEvents',
-            'pendingOrders',
-            'recentTransactions',
-            'labels',
-            'data'
-        ));
+            $table->timestamps();
+        });
     }
-}
+
+    public function down(): void
+    {
+        Schema::dropIfExists('transactions');
+    }
+};

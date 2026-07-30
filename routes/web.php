@@ -35,11 +35,15 @@ Route::get('/my-ticket', [UserEventController::class, 'ticket'])
 // CHECKOUT & PAYMENT
 // =========================
 
-Route::get('/checkout/{event}', [CheckoutController::class, 'create'])
-    ->name('checkout.create');
+Route::middleware('auth')->group(function () {
 
-Route::post('/checkout/{event}', [CheckoutController::class, 'store'])
-    ->name('checkout.store');
+    Route::get('/checkout/{event}', [CheckoutController::class, 'create'])
+        ->name('checkout.create');
+
+    Route::post('/checkout/{event}', [CheckoutController::class, 'store'])
+        ->name('checkout.store');
+
+});
 
 Route::get('/payment/{order_id}', [CheckoutController::class, 'payment'])
     ->name('checkout.payment');
@@ -70,6 +74,11 @@ Route::middleware('auth')->group(function () {
         ->name('review.store');
 
 });
+
+Route::get('/auth/google', [GoogleController::class, 'redirect'])
+    ->name('google.login');
+
+Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
 
 // =========================
 // ORGANIZATION LOGIN
@@ -153,5 +162,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('pengurus', PengurusController::class);
 
     });
+
+    Route::middleware('auth')->group(function () {
+
+    Route::get('/my-ticket', [UserEventController::class, 'ticket'])
+        ->name('my-ticket');
+
+});
 
 });

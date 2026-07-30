@@ -54,7 +54,7 @@ class MidtransWebhookController extends Controller
 
         } elseif ($transactionStatus == 'settlement') {
 
-            $transaction->status = 'settlement';
+            $transaction->status = 'success';;
             $this->processSuccess($transaction);
 
         } elseif (in_array($transactionStatus, ['cancel', 'deny', 'expire'])) {

@@ -170,71 +170,7 @@
                         {{ session('error') }}
                     </div>
                 @endif
-
-                {{-- Form Review --}}
-                @if(!$transaction->review)
-
-                <form action="{{ route('review.store',$transaction->id) }}" method="POST" class="mt-6">
-                    @csrf
-
-                    <label class="block font-bold mb-2">
-                        Rating
-                    </label>
-
-                    <select
-                        name="rating"
-                        class="w-full border rounded-xl p-3"
-                        required>
-
-                        <option value="">Pilih Rating</option>
-                        <option value="5">⭐⭐⭐⭐⭐</option>
-                        <option value="4">⭐⭐⭐⭐</option>
-                        <option value="3">⭐⭐⭐</option>
-                        <option value="2">⭐⭐</option>
-                        <option value="1">⭐</option>
-
-                    </select>
-
-                    <label class="block font-bold mt-5 mb-2">
-                        Review
-                    </label>
-
-                    <textarea
-                        name="review"
-                        rows="4"
-                        class="w-full border rounded-xl p-3"
-                        placeholder="Bagikan pengalaman mengikuti event ini..."></textarea>
-
-                    <button
-                        type="submit"
-                        class="w-full mt-5 bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-xl font-bold">
-
-                        Kirim Review
-
-                    </button>
-
-                </form>
-
-                @else
-
-                <div class="mt-6 bg-green-50 border border-green-200 rounded-xl p-5">
-
-                    <h3 class="font-bold text-lg mb-2">
-                        Review Anda
-                    </h3>
-
-                    <div class="text-yellow-500 text-2xl">
-                        {{ str_repeat('⭐', $transaction->review->rating) }}
-                    </div>
-
-                    <p class="mt-3 text-slate-700">
-                        {{ $transaction->review->review }}
-                    </p>
-
-                </div>
-
-                @endif
-
+                
                 <a href="{{ route('welcome') }}"
                     class="block text-center mt-5 text-slate-500 font-semibold hover:text-indigo-600">
 

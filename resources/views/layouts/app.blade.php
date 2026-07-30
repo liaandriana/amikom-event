@@ -23,19 +23,56 @@
 <body class="bg-slate-50 text-slate-900">
 
     <!-- Navigation -->
-    <nav
-        class="glass sticky top-8 z-40 mx-4 mt-4 px-6 py-4 rounded-2xl border border-white/20 shadow-lg flex justify-between items-center">
+ <nav
+    class="glass sticky top-8 z-40 mx-4 mt-4 px-6 py-4 rounded-2xl border border-white/20 shadow-lg flex justify-between items-center">
         <div class="flex items-center gap-2">
             <div
                 class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-bold text-xl">
                 AH</div>
             <span class="text-xl font-bold tracking-tight">AmikomEventHub</span>
         </div>
-        <div class="hidden md:flex gap-8 font-medium">
-            <a href="#" class="text-indigo-600">Jelajahi</a>
-            <a href="#" class="hover:text-indigo-600 transition">Kategori</a>
-            <a href="#" class="hover:text-indigo-600 transition">Tentang Kami</a>
-        </div>
+        <div class="hidden md:flex items-center gap-8 font-medium">
+
+    <a href="{{ route('welcome') }}" class="hover:text-indigo-600 transition">
+        Jelajahi
+    </a>
+
+    <a href="#" class="hover:text-indigo-600 transition">
+        Kategori
+    </a>
+
+    <a href="#" class="hover:text-indigo-600 transition">
+        Tentang Kami
+    </a>
+
+    @auth
+        <a href="{{ route('my-ticket') }}"
+            class="{{ request()->routeIs('my-ticket') ? 'text-indigo-600 font-semibold' : 'hover:text-indigo-600' }} transition">
+            My Ticket
+        </a>
+    @endauth
+
+</div>
+<div class="flex items-center gap-3">
+
+    @guest
+
+        <a href="{{ route('google.login') }}"
+            class="px-5 py-2.5 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition">
+
+            Login Google
+
+        </a>
+
+    @else
+
+        <span class="font-semibold">
+            {{ auth()->user()->name }}
+        </span>
+
+    @endguest
+
+</div>
         <!-- <div class="flex gap-3">
             <button class="px-5 py-2.5 rounded-xl font-semibold hover:bg-slate-200 transition">Login</button>
             <button

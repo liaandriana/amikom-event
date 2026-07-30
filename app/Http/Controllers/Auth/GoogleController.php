@@ -16,6 +16,7 @@ class GoogleController extends Controller
      */
   public function redirect(Request $request)
 {
+    session(['url.intended' => url()->previous()]);
     if ($request->filled('event')) {
 
         session([

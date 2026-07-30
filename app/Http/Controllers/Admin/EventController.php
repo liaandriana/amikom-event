@@ -120,4 +120,6 @@ class EventController extends Controller
             ->route('admin.events.index')
             ->with('success', 'Data event berhasil dihapus');
     }
+
+    
 }

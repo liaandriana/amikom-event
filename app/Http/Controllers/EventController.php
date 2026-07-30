@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
-use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\Transaction;
 class EventController extends Controller
 {
     public function show($id)
@@ -21,14 +20,15 @@ class EventController extends Controller
         return view('checkout');
     }
 
-    public function ticket()
-    {
-       $transaction = Transaction::with(['event', 'review'])
+  public function ticket()
+{
+    $transactions = Transaction::with(['event', 'review'])
         ->where('customer_email', Auth::user()->email)
-        ->whereIn('status', ['settlement', 'success'])
         ->latest()
-        ->first();
+        ->get();
 
-        return view('my-ticket', compact('transaction'));
-    }
+    return view('my-ticket', compact('transactions'));
+}
+
+    
 }
