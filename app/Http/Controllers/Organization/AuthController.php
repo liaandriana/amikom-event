@@ -12,7 +12,7 @@ class AuthController extends Controller
 {
     public function showRegister()
 {
-    return view('organization.events.create');
+    return view('Organization.events.create');
 }
 
 public function register(Request $request)
