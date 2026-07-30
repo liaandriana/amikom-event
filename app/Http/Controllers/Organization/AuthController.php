@@ -50,7 +50,7 @@ public function register(Request $request)
 
             $request->session()->regenerate();
 
-            return redirect()->route('Organization.dashboard');
+            return redirect()->route('organization.dashboard');
         }
 
         return back()->withErrors([
@@ -66,6 +66,6 @@ public function register(Request $request)
 
         $request->session()->regenerateToken();
 
-        return redirect()->route('Organization.login');
+        return redirect()->route('organization.login');
     }
 }
