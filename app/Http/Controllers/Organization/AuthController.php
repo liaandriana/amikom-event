@@ -30,13 +30,13 @@ public function register(Request $request)
     ]);
 
     return redirect()
-        ->route('organization.login')
+        ->route('Organization.login')
         ->with('success', 'Akun berhasil dibuat. Silakan login.');
 }
 
     public function showLogin()
     {
-        return view('organization.login');
+        return view('Organization.login');
     }
 
     public function login(Request $request)
@@ -50,7 +50,7 @@ public function register(Request $request)
 
             $request->session()->regenerate();
 
-            return redirect()->route('organization.dashboard');
+            return redirect()->route('Organization.dashboard');
         }
 
         return back()->withErrors([
@@ -66,6 +66,6 @@ public function register(Request $request)
 
         $request->session()->regenerateToken();
 
-        return redirect()->route('organization.login');
+        return redirect()->route('Organization.login');
     }
 }
