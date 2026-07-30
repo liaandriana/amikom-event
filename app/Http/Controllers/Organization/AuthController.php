@@ -30,7 +30,7 @@ public function register(Request $request)
     ]);
 
     return redirect()
-        ->route('Organization.login')
+        ->route('organization.login')
         ->with('success', 'Akun berhasil dibuat. Silakan login.');
 }
 
