@@ -26,7 +26,7 @@ class DashboardController extends Controller
         // Menghitung jumlah event milik organisasi
         $totalEvent = Event::where('organization_id', $organization->id)->count();
 
-        return view('organization.dashboard', compact(
+        return view('Organization.dashboard', compact(
             'organization',
             'totalRevenue',
             'totalTransaction',
