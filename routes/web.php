@@ -100,6 +100,9 @@ Route::prefix('organization')
         Route::post('login', [OrganizationAuthController::class, 'login'])
             ->name('login.post');
 
+        Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('dashboard');
+
         Route::post('logout', [OrganizationAuthController::class, 'logout'])
             ->name('logout');
     });
